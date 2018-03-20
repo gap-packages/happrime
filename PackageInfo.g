@@ -1,102 +1,123 @@
 #############################################################################
-##  
-##  Demo PackageInfo.g for the GitHubPagesForGAP
 ##
+##  HAPPRIME - PackageInfo.g
+##  Initialisation file
+##  Paul Smith
+##
+##  Copyright (C)  2007-2008
+##  National University of Ireland Galway
+##  Copyright (C)  2011
+##  University of St Andrews
+##
+##  HAPprime is free software; you can redistribute it and/or modify
+##  it under the terms of the GNU General Public License as published by
+##  the Free Software Foundation; either version 2 of the License, or
+##  (at your option) any later version.
+## 
+##  HAPprime is distributed in the hope that it will be useful,
+##  but WITHOUT ANY WARRANTY; without even the implied warranty of
+##  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+##  GNU General Public License for more details.
+## 
+##  You should have received a copy of the GNU General Public License
+##  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+## 
+#############################################################################
 
 SetPackageInfo( rec(
 
-PackageName := "GitHubPagesForGAP",
-
-Subtitle := "A GitHub Pages generator for GAP packages",
-Version := "0.2",
-Date := "04/02/2017", # dd/mm/yyyy format
+PackageName := "HAPprime",
+Subtitle := "a HAP extension for small prime power groups",
+Version := "0.6dev",
+Date := "09/06/2011",
 
 Persons := [
-  rec(
-    LastName      := "Horn",
-    FirstNames    := "Max",
+  rec( 
+    LastName      := "Smith",
+    FirstNames    := "Paul",
     IsAuthor      := true,
     IsMaintainer  := true,
-    Email         := "max.horn@math.uni-giessen.de",
-    WWWHome       := "http://www.quendi.de/math",
-    PostalAddress := Concatenation(
-                       "AG Algebra\n",
-                       "Mathematisches Institut\n",
-                       "Justus-Liebig-Universität Gießen\n",
-                       "Arndtstraße 2\n",
-                       "35392 Gießen\n",
-                       "Germany" ),
-    Place         := "Gießen",
-    Institution   := "Justus-Liebig-Universität Gießen"
+    Email         := "paul.smith@st-andrews.ac.uk",
+    WWWHome       := "http://www.cs.st-andrews.ac.uk/~pas",
+    PostalAddress := Concatenation( [
+                         "Paul Smith\n",
+                         "School of Computer Science\n",
+                         "University of St Andrews\n",
+                         "St Andrews\n",
+                         "UK" ] ),
+    Place         := "St Andrews",
+    Institution   := "University of St Andrews"
   ),
-
-  rec(
-    LastName      := "Thor",
-    FirstNames    := "A. U.",
-    IsAuthor      := true,
-    IsMaintainer  := false,
-    #Email         := "author@example.com",
-  ),
-
-  rec(
-    LastName      := "Itor",
-    FirstNames    := "Jan",
+# provide such a record for each author and/or maintainer ...
+  rec( 
+    LastName      := "The CHA Group",
+    FirstNames    := "",
     IsAuthor      := false,
     IsMaintainer  := true,
-    #Email         := "janitor@example.com",
+    Email         := "graham.ellis@nuigalway.ie",
+    WWWHome       := "http://hamilton.nuigalway.ie/CHA/",
+    PostalAddress := Concatenation( [
+      "The CHA group\n",
+      "Mathematics Department\n",
+      "NUI Galway\n",
+      "Galway\n",
+      "Ireland" ] ),
+    Place         := "Galway",
+    Institution   := "National University of Ireland Galway"
   ),
 ],
 
-Status := "other",
+Status := "deposited",
 
-# The following are not strictly necessary in your own PackageInfo.g
-# (in the sense that update.g only looks at the usual fields
-# like PackageWWWHome, ArchiveURL etc.). But they are convenient
-# if you use exactly the scheme for your package website that we propose.
-GithubUser := "gap-system",
-GithubRepository := ~.PackageName,
-GithubWWW := Concatenation("https://github.com/", ~.GithubUser, "/", ~.GithubRepository),
-
-PackageWWWHome := Concatenation("https://", ~.GithubUser, ".github.io/", ~.GithubRepository, "/"),
-README_URL     := Concatenation( ~.PackageWWWHome, "README.md" ),
-PackageInfoURL := Concatenation( ~.PackageWWWHome, "PackageInfo.g" ),
-# The following assumes you are using the Github releases system. If not, adjust
-# it accordingly.
-ArchiveURL     := Concatenation(~.GithubWWW,
-                    "/releases/download/v", ~.Version, "/",
-                    ~.GithubRepository, "-", ~.Version),
-
-ArchiveFormats := ".tar.gz .tar.bz2",
+PackageWWWHome  := "https://gap-packages.github.io/happrime/",
+README_URL      := Concatenation( ~.PackageWWWHome, "README" ),
+PackageInfoURL  := Concatenation( ~.PackageWWWHome, "PackageInfo.g" ),
+SourceRepository := rec(
+    Type := "git",
+    URL := "https://github.com/gap-packages/happrime",
+),
+IssueTrackerURL := Concatenation( ~.SourceRepository.URL, "/issues" ),
+ArchiveURL      := Concatenation( ~.SourceRepository.URL,
+                                 "/releases/download/v", ~.Version,
+                                 "/happrime-", ~.Version ),
+ArchiveFormats := ".tar.gz",
 
 AbstractHTML := 
-  "This is a pseudo package that contains no actual\
-  <span class=\"pkgname\">GAP</span> code. Instead, it is a template for other\
-  GAP packages that allows to quickly setup GitHub Pages.",
+  "The <span class=\"pkgname\">HAPPrime</span> package is an extension to the \
+  <span class=\"pkgname\">HAP</span> package, and implements memory-efficient \
+  algorithms for the calculation of resolutions of small prime-power groups.",
 
-PackageDoc := rec(
-  BookName  := "GitHubPagesForGAP",
-  ArchiveURLSubset := ["doc"],
-  HTMLStart := "doc/chap0.html",
-  PDFFile   := "doc/manual.pdf",
-  SixFile   := "doc/manual.six",
-  LongTitle := "A GitHub Pages generator for GAP packages",
-),
+PackageDoc := [
+  rec(
+    BookName  := "HAPprime",
+    ArchiveURLSubset := ["doc"],
+    HTMLStart := "doc/userguide/chap0.html",
+    PDFFile   := "doc/userguide/manual.pdf",
+    SixFile   := "doc/userguide/manual.six",
+    LongTitle := "A small prime-power group extension to HAP",
+    Autoload  := true
+  ),
+  rec(
+    BookName  := "HAPprime Datatypes",
+    ArchiveURLSubset := ["doc"],
+    HTMLStart := "doc/datatypes/chap0.html",
+    PDFFile   := "doc/datatypes/manual.pdf",
+    SixFile   := "doc/datatypes/manual.six",
+    LongTitle := "Datatype reference for HAPprime",
+    Autoload  := true
+  )
+],
+    
 
-# The following dependencies are fake and for testing / demo purposes
 Dependencies := rec(
-  GAP := ">=4.8.1",
-  NeededOtherPackages := [
-    ["GAPDoc", ">= 1.2"],
-    ["IO", ">= 4.1"],
-  ],
-  SuggestedOtherPackages := [["orb", ">= 4.2"]],
+  GAP := ">=4.7",
+  NeededOtherPackages := [["HAP", ">=1.9.3"], ["GAPDoc", "1.0"]],
+  SuggestedOtherPackages := [],  
   ExternalConditions := []
 ),
 
 AvailabilityTest := ReturnTrue,
-
-Keywords := ["GitHub Pages", "GAP"]
+TestFile := "tst/testall.g",
+Keywords := ["homological algebra", "resolution", "modules"],
 
 ));
-
-
