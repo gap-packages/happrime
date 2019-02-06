@@ -28,12 +28,8 @@
 
 gap> START_TEST("HAPprime version 0.6 general tests");
 gap> 
-gap> LoadPackage("HAP");;
-gap> LoadPackage("HAPPrime");;
-gap> ##
-gap> # Check the PackageInfo.g for this package
-gap> ValidatePackageInfo( Filename( DirectoriesPackageLibrary( "HAPprime", "" ), "PackageInfo.g" ) );
-true
+gap> LoadPackage("HAP", false);;
+gap> LoadPackage("HAPPrime", false);;
 gap> # Set the info level to zero to suppress some of the output
 gap> infolevel := InfoLevel(InfoHAPprime);;
 gap> SetInfoLevel(InfoHAPprime, 0);

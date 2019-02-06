@@ -26,38 +26,44 @@
 ## 
 #############################################################################
 
+LoadPackage("HAPprime");
 dir := DirectoriesPackageLibrary( "HAPprime", "tst" );
+testresult := true;
 
-if not IsEmpty(dir) then
-  file := Filename(dir, "happrime.tst");
-  if file <> fail and IsReadableFile(file) then
-    ReadTest(file);
-  else
-    Print("happrime/tst/happrime.tst does not exist.\n");
-    Print("Please check your installation of HAPprime.\n");
-  fi;
-  
-  if not HAPPRIME_SingularIsAvailable() = true then
-    Print("The 'Singular' executable does not appear to be available: skipping remaining tests\n");
-  else
-    file := Filename(dir, "userguideexamples.tst");
-    if file <> fail and IsReadableFile(file) then
-      ReadTest(file);
-    else
-      Print("happrime/tst/userguideexamples.tst does not exist.\n");
-      Print("Please build the HAPprime manual using MakeHAPprimeDoc()\n");
-    fi;
-  
-    file := Filename(dir, "datatypesexamples.tst");
-    if file <> fail and IsReadableFile(file) then
-      ReadTest(file);
-    else
-      Print("happrime/tst/datatypesexamples.tst does not exist.\n");
-      Print("Please build the HAPprime manual using MakeHAPprimeDoc()\n");
-    fi;
-  fi;
+file := Filename(dir, "happrime.tst");
+if file <> fail and IsReadableFile(file) then
+  testresult := testresult and Test(file);
 else
-  Print("happrime/tst/testall.g: Unable to perform tests - \n");
-  Print("                        the HAPprime package is not loaded\n");
+  Print("happrime/tst/happrime.tst does not exist.\n");
+  Print("Please check your installation of HAPprime.\n");
 fi;
 
+if not HAPPRIME_SingularIsAvailable() = true then
+  Print("The 'Singular' executable does not appear to be available: skipping remaining tests\n");
+else
+  file := Filename(dir, "userguideexamples.tst");
+  if file <> fail and IsReadableFile(file) then
+    testresult := testresult and Test(file);
+  else
+    Print("happrime/tst/userguideexamples.tst does not exist.\n");
+    Print("Please build the HAPprime manual using MakeHAPprimeDoc()\n");
+  fi;
+
+  file := Filename(dir, "datatypesexamples.tst");
+  if file <> fail and IsReadableFile(file) then
+    testresult := testresult and Test(file);
+  else
+    Print("happrime/tst/datatypesexamples.tst does not exist.\n");
+    Print("Please build the HAPprime manual using MakeHAPprimeDoc()\n");
+  fi;
+fi;
+
+if testresult then
+  Print("#I  No errors detected while testing\n");
+  QUIT_GAP(0);
+else
+  Print("#I  Errors detected while testing\n");
+  QUIT_GAP(1);
+fi;
+
+FORCE_QUIT_GAP(1); # if we ever get here, there was an error
